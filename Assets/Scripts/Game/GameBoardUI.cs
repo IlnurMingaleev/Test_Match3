@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 namespace Game
 {
-    public class GameBoard:MonoBehaviour
+    public class GameBoardUI:MonoBehaviour
     {
         //Move to Config Class
         [SerializeField] private GameObject _boardTilePrefab;
@@ -74,7 +74,7 @@ namespace Game
             //_currentTileTransform.position = nextPosition;
 
             _boardTilesView[indexRow, indexCols] = Instantiate(_boardTilePrefab);
-            PositionTransform(_parentTransform,nextPosition,_boardTilesView[indexRow,indexCols].transform);
+            PositionRectTransform(_parentTransform,nextPosition,_boardTilesView[indexRow,indexCols].GetComponent<RectTransform>());
         }
 
         public void InitializeBoardViewBouds()
@@ -85,16 +85,15 @@ namespace Game
             _tileHeight = _heightInUnits / _boardHeight;
             _initialPosition = new Vector3(_leftUpperCornerTransform.position.x + _tileWidth / 2, _leftUpperCornerTransform.position.y - _tileHeight/2, _leftUpperCornerTransform.position.z);
         }
-
-        public void PositionTransform(Transform parentTransform,Vector3 nextPosition, Transform targetTransform)
-        {
-            targetTransform.SetParent(parentTransform.transform);
-            targetTransform.transform.position = nextPosition;
-        }
+        
         public void PositionRectTransform(Transform parentTransform,Vector3 nextPosition, RectTransform targetRectTransform)
         {
             targetRectTransform.SetParent(parentTransform.transform);
-            targetRectTransform.transform.position = nextPosition;
+            targetRectTransform.anchoredPosition.Set(0, 0);
+            targetRectTransform.anchorMin.Set(0, 0);
+            targetRectTransform.anchorMax.Set(0, 1);
+            targetRectTransform.pivot.Set(0, 0);
+            targetRectTransform.transform.localPosition = nextPosition;
         }
 
 
